@@ -1,0 +1,20 @@
+{
+    "name": "ecommerceapi",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "start:dev": "ts-node-dev --respawn --transpile-only index.ts"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.13",
+        "@types/node": "^16.11.11",
+        "ts-node-dev": "^1.1.8",
+        "typescript": "^4.5.2"
+    },
+    "dependencies": {
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "mongoose": "^6.0.14"
+    }
+}
