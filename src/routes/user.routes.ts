@@ -8,7 +8,7 @@ userRoutes.get('/user', (req, res) => {
 
 userRoutes.post('/user', (req, res) => {
     const { username } = req.body;
-    res.json(username);
+    res.json({ message: `This is your username: ${username}` });
 });
 
 export { userRoutes };
