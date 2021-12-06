@@ -1,20 +1,17 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import { dotenvConfig } from './src/config/dotenv.config';
+import { userRoutes } from './src/routes/user.routes';
+import { mongooseConnection } from './src/db/mongoose.config';
+
+dotenvConfig;
+mongooseConnection;
 
 const app = express();
+app.use(express.json());
+const PORT = process.env.PORT || 5000;
 
-dotenv.config();
+app.use('/api/v1/', userRoutes);
 
-mongoose
-    .connect(process.env.MONGO_URI || '')
-    .then(() => {
-        console.log('[DB]', 'DB Connection successfull!');
-    })
-    .catch((err) => {
-        console.log('[DB]', err);
-    });
-
-app.listen(3333, () => {
-    console.log('[SERVER]', 'Listening on port 3333');
+app.listen(PORT, () => {
+    console.log('[SERVER]', `Listening on port ${PORT}`);
 });
