@@ -3,6 +3,7 @@ import User from '../models/User';
 import CryptoJS from 'crypto-js';
 import { dotenvConfig } from '../config/dotenv.config';
 import jwt from 'jsonwebtoken';
+import { verifyTokenAndAdmin } from '../middlewares/verifyToken';
 
 dotenvConfig;
 
@@ -52,7 +53,7 @@ authRoutes.post('/auth/login', async (req, res) => {
 
             const token = jwt.sign(
                 {
-                    userId: user._id,
+                    id: user._id,
                     isAdmin: user.isAdmin,
                 },
                 process.env.JWT_SECRET_KEY || '',
@@ -65,6 +66,32 @@ authRoutes.post('/auth/login', async (req, res) => {
         }
     } catch (err) {
         res.status(500).json({ message: err });
+    }
+});
+
+authRoutes.put('/auth/update/admin', verifyTokenAndAdmin, async (req, res) => {
+    const { id, isAdmin } = req.body;
+
+    if (!id || !isAdmin) {
+        return res.status(400).json({ message: 'Bad request' });
+    } else {
+        try {
+            const user = await User.findById(id);
+
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            } else {
+                user.isAdmin = isAdmin;
+
+                const updatedUser = await user.save();
+
+                updatedUser.password = undefined;
+
+                res.status(200).json(updatedUser);
+            }
+        } catch (err) {
+            res.status(500).json({ message: err });
+        }
     }
 });
 
