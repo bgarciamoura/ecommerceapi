@@ -57,7 +57,7 @@ authRoutes.post('/auth/login', async (req, res) => {
                     isAdmin: user.isAdmin,
                 },
                 process.env.JWT_SECRET_KEY || '',
-                { expiresIn: '1h' }
+                { expiresIn: '24h' }
             );
 
             res.status(200).json({ user, token });
