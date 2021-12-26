@@ -83,7 +83,7 @@ productRoutes.delete('/products/:id', verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-productRoutes.get('/products/new', verifyTokenAndAdmin, async (req, res) => {
+productRoutes.get('/products/new', async (req, res) => {
     try {
         const products = await Product.find({}).sort({ createdAt: -1 }).limit(5);
         res.status(200).json(products);
@@ -92,14 +92,14 @@ productRoutes.get('/products/new', verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-productRoutes.get('/products/category', verifyTokenAndAdmin, async (req, res) => {
-    const { categories } = req.body;
+productRoutes.get('/products/category', async (req, res) => {
+    const categories = req.query.categories;
 
     try {
         if (categories) {
             const products = await Product.find({
                 categories: {
-                    $in: [...categories],
+                    $in: [categories],
                 },
             });
 
@@ -112,7 +112,7 @@ productRoutes.get('/products/category', verifyTokenAndAdmin, async (req, res) =>
     }
 });
 
-productRoutes.get('/products/:id?', verifyTokenAndAdmin, async (req, res) => {
+productRoutes.get('/products/:id?', async (req, res) => {
     const { id } = req.params;
 
     try {
